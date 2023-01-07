@@ -25,7 +25,7 @@ public class PessoaDTO {
     private String nomeCompleto;
 
     @NotNull
-    private LocalDate dataDeNascimento;
+    private LocalDate dataNascimento;
 
     @Valid
     @NotBlank
