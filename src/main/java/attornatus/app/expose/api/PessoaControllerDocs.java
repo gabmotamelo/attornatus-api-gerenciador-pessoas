@@ -1,6 +1,8 @@
-package attornatus.gerenciador_app.expose.api;
+package attornatus.app.expose.api;
 
 
+import attornatus.domain.error.PessoaJaFoiRegistradaException;
+import attornatus.infra.dtos.request.PessoaDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

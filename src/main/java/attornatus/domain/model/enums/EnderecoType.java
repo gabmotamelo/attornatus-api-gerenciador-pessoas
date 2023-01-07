@@ -1,4 +1,4 @@
-package attornatus.gerenciador_domain.model.enums;
+package attornatus.domain.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

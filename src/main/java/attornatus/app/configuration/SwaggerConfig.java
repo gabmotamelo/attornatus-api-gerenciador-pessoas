@@ -1,4 +1,4 @@
-package attornatus.gerenciador_app.configuration;
+package attornatus.app.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

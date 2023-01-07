@@ -1,8 +1,7 @@
-package attornatus.gerenciador_domain.model.repositories;
+package attornatus.domain.model.repositories;
 
-import attornatus.gerenciador_domain.model.entities.Pessoa;
+import attornatus.domain.model.entities.Pessoa;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 
 public interface PessoaRepository extends JpaRepository<Pessoa, Long>{
 
