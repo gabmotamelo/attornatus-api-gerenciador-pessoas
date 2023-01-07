@@ -39,7 +39,7 @@ public class EnderecoDTO {
     private String complemento;
 
     @NotBlank
-    @Size(min = 2, max = 14)
+    @Size(min = 2, max = 50)
     private String cidade;
 
 }
