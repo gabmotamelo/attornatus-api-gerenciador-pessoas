@@ -1,4 +1,4 @@
-package attornatus.gerenciador_domain.model.entities;
+package attornatus.domain.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
