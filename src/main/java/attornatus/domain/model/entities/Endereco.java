@@ -1,6 +1,6 @@
-package attornatus.gerenciador_domain.model.entities;
+package attornatus.domain.model.entities;
 
-import attornatus.gerenciador_domain.model.enums.EnderecoType;
+import attornatus.domain.model.enums.EnderecoType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

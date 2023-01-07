@@ -1,11 +1,15 @@
-package attornatus.gerenciador_app.expose.api;
+package attornatus.app.expose.api;
 
 
+import attornatus.domain.error.PessoaJaFoiRegistradaException;
+import attornatus.infra.dtos.request.PessoaDTO;
+import attornatus.infra.service.PessoaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/pessoas")
@@ -14,10 +18,6 @@ public class PessoaController implements PessoaControllerDocs {
 
     private final PessoaService pessoaService;
 
-    @GetMapping
-    public String testAPi(){
-        return "Testando";
-    }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PessoaDTO criarPessoa(@RequestBody @Valid PessoaDTO pessoaDTO) throws PessoaJaFoiRegistradaException {
