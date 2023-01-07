@@ -2,6 +2,7 @@ package attornatus.app.expose.api;
 
 
 import attornatus.domain.error.PessoaJaFoiRegistradaException;
+import attornatus.domain.error.PessoaNaoEncontradaException;
 import attornatus.infra.dtos.request.PessoaDTO;
 import attornatus.infra.service.PessoaService;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,11 @@ public class PessoaController implements PessoaControllerDocs {
     @ResponseStatus(HttpStatus.CREATED)
     public PessoaDTO criarPessoa(@RequestBody @Valid PessoaDTO pessoaDTO) throws PessoaJaFoiRegistradaException {
         return pessoaService.criarPessoa(pessoaDTO);
+    }
+
+    @GetMapping("/{nome}")
+    public PessoaDTO encontraPessoa(@PathVariable String nome) throws PessoaNaoEncontradaException{
+        return pessoaService.encontraPessoa(nome);
     }
 
 }
