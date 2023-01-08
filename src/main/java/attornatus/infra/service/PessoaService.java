@@ -22,7 +22,7 @@ public class PessoaService {
     private final PessoaMapper pessoaMapper = PessoaMapper.INSTANCE;
 
     public PessoaDTO criarPessoa(PessoaDTO pessoaDTO) throws PessoaJaFoiRegistradaException {
-        verificarPessoaExiste(pessoaDTO.getNomeCompleto());
+        verificarPessoaJaFoiRegistrada(pessoaDTO.getNomeCompleto());
         Pessoa pessoa = pessoaMapper.toModel(pessoaDTO);
         Pessoa pessoaSalva = pessoaRepository.save(pessoa);
         return pessoaMapper.toDTO(pessoaSalva);
@@ -34,18 +34,30 @@ public class PessoaService {
     }
 
 
-    private void verificarPessoaExiste(String nome) throws PessoaJaFoiRegistradaException {
+    public List<PessoaDTO> listarPessoas() {
+        return pessoaRepository.findAll()
+                .stream()
+                .map(pessoaMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteByNome(String nome) throws PessoaNaoEncontradaException {
+        verificarSeExiste(nome);
+        pessoaRepository.deleteByNomeCompleto(nome);
+    }
+
+    private void verificarPessoaJaFoiRegistrada(String nome) throws PessoaJaFoiRegistradaException {
         Optional<Pessoa> optPessoaSalva = Optional.ofNullable(pessoaRepository.findByNomeCompleto(nome));
         if (optPessoaSalva.isPresent()) {
             throw new PessoaJaFoiRegistradaException(nome);
         }
     }
 
-    public List<PessoaDTO> listarPessoas() {
-        return pessoaRepository.findAll()
-                .stream()
-                .map(pessoaMapper::toDTO)
-                .collect(Collectors.toList());
+    private void verificarSeExiste(String nome) throws PessoaNaoEncontradaException {
+        Optional<Pessoa> optPessoaSalva = Optional.ofNullable(pessoaRepository.findByNomeCompleto(nome));
+        if (optPessoaSalva.isEmpty()){
+            throw new PessoaNaoEncontradaException(nome);
+        }
     }
 
 }

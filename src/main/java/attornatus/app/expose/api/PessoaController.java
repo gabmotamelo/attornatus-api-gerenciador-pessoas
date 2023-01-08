@@ -36,4 +36,10 @@ public class PessoaController implements PessoaControllerDocs {
         return pessoaService.listarPessoas();
     }
 
+    @DeleteMapping("/{nome}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByNome(@PathVariable String nome) throws PessoaNaoEncontradaException {
+        pessoaService.deleteByNome(nome);
+    }
+
 }
