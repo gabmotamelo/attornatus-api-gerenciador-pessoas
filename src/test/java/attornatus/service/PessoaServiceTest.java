@@ -14,8 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,6 +66,28 @@ public class PessoaServiceTest {
         PessoaDTO foundPessoaDTO = pessoaService.encontraPessoa(esperadaPessoaDTO.getNomeCompleto());
 
         assertEquals(esperadaPessoaDTO, foundPessoaDTO);
+    }
+
+    @Test
+    void quandoListaPessoasChaamdaEntaoretornaUmaListaDePessoas() {
+        PessoaDTO expectedPessoaDTO = PessoaDTOBuilder.builder().build().toPessoaDto();
+        Pessoa expectedFoundPessoa = pessoaMapper.toModel(expectedPessoaDTO);
+
+        when(pessoaRepository.findAll()).thenReturn(Collections.singletonList(expectedFoundPessoa));
+
+        List<PessoaDTO> encontradoPessoaDTO = pessoaService.listarPessoas();
+
+        assertFalse(encontradoPessoaDTO.isEmpty());
+        assertEquals(expectedPessoaDTO, encontradoPessoaDTO.get(0));
+    }
+
+    @Test
+    void whenListBeerIsCalledThenReturnAnEmptyList() {
+        when(pessoaRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
+
+        List<PessoaDTO> encontradoPessoaDTO = pessoaService.listarPessoas();
+
+        assertTrue(encontradoPessoaDTO.isEmpty());
     }
 
 }
