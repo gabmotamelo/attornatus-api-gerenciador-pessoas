@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.util.Collections;
+
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -96,5 +98,26 @@ public class PessoaControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void quandoGETListaComPessoasChamadoEntaoStatusOkERetornado() throws Exception {
+        PessoaDTO pessoaDTO = PessoaDTOBuilder.builder().build().toPessoaDto();
 
+        when(pessoaService.listarPessoas()).thenReturn(Collections.singletonList(pessoaDTO));
+
+        mockMvc.perform(get(PESSOA_API_URL_PATH)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nomeCompleto", is(pessoaDTO.getNomeCompleto())))
+                .andExpect(jsonPath("$.dataNascimento", is(pessoaDTO.getDataNascimento())))
+                .andExpect(jsonPath("$.enderecos", is(pessoaDTO.getEnderecos())));
+    }
+
+    @Test
+    void quandoGETListaSemPessoasChamadoEntaoStatusOkERetornado() throws Exception {
+        when(pessoaService.listarPessoas()).thenReturn(Collections.EMPTY_LIST);
+
+        mockMvc.perform(get(PESSOA_API_URL_PATH)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }
