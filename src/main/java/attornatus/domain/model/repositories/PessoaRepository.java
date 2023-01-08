@@ -7,4 +7,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long>{
 
   Pessoa findByNomeCompleto(String nome);
 
+  Pessoa deleteByNomeCompleto(String nome);
+
 }
