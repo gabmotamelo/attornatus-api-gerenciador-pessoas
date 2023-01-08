@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @Api("Gerenciar pessoas")
 public interface PessoaControllerDocs {
 
@@ -25,4 +27,11 @@ public interface PessoaControllerDocs {
             @ApiResponse(code = 404, message = "Pessoa com o nome dado não encontrado.")
     })
     PessoaDTO encontraPessoa(@PathVariable String nome) throws PessoaNaoEncontradaException;
+
+    @ApiOperation(value = "Retorna a lista de todas pessoas registrada no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de todas pessoas registradas no sistema"),
+    })
+    List<PessoaDTO> listarPessoas();
+
 }
