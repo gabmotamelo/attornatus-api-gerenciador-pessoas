@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/pessoas")
@@ -28,6 +29,11 @@ public class PessoaController implements PessoaControllerDocs {
     @GetMapping("/{nome}")
     public PessoaDTO encontraPessoa(@PathVariable String nome) throws PessoaNaoEncontradaException{
         return pessoaService.encontraPessoa(nome);
+    }
+
+    @GetMapping
+    public List<PessoaDTO> listarPessoas() {
+        return pessoaService.listarPessoas();
     }
 
 }
