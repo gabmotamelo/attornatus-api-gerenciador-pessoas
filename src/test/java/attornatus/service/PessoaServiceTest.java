@@ -1,6 +1,8 @@
 package attornatus.service;
 
+import attornatus.builder.dto.PessoaDTOBuilder;
 import attornatus.domain.error.PessoaJaFoiRegistradaException;
+import attornatus.domain.error.PessoaNaoEncontradaException;
 import attornatus.domain.model.entities.Pessoa;
 import attornatus.domain.model.repositories.PessoaRepository;
 import attornatus.infra.dtos.mapper.PessoaMapper;
@@ -50,6 +52,18 @@ public class PessoaServiceTest {
         when(pessoaRepository.findByNomeCompleto(pessoaDTO.getNomeCompleto())).thenReturn(pessoaDuplicada);
 
         assertThrows(PessoaJaFoiRegistradaException.class,() -> pessoaService.criarPessoa(pessoaDTO));
+    }
+
+    @Test
+    void quandoUmPessoaValidaForInformadaRetornaUmaPessoa() throws PessoaNaoEncontradaException{
+        PessoaDTO esperadaPessoaDTO = PessoaDTOBuilder.builder().build().toPessoaDto();
+        Pessoa esperadaPessoaEncontrada = pessoaMapper.toModel(esperadaPessoaDTO);
+
+        when(pessoaRepository.findByNomeCompleto(esperadaPessoaDTO.getNomeCompleto())).thenReturn(esperadaPessoaEncontrada);
+
+        PessoaDTO foundPessoaDTO = pessoaService.encontraPessoa(esperadaPessoaDTO.getNomeCompleto());
+
+        assertEquals(esperadaPessoaDTO, foundPessoaDTO);
     }
 
 }
