@@ -34,4 +34,11 @@ public interface PessoaControllerDocs {
     })
     List<PessoaDTO> listarPessoas();
 
+    @ApiOperation(value = "Deletar uma pessoa pelo nome dado valido")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Sucesso pessoa deletada do sistema."),
+            @ApiResponse(code = 404, message = "Pessoa com o nome informado não foi encontrada.")
+    })
+    void deleteByNome(@PathVariable String nome) throws PessoaNaoEncontradaException;
+
 }
