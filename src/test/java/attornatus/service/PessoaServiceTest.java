@@ -16,9 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PessoaServiceTest {
@@ -27,6 +28,8 @@ public class PessoaServiceTest {
     private PessoaRepository pessoaRepository;
 
     private PessoaMapper pessoaMapper = PessoaMapper.INSTANCE;
+
+    private static final String INVALIDO_PESSOA_NOME = "Gabriel";
 
     @InjectMocks
     private PessoaService pessoaService;
@@ -69,7 +72,7 @@ public class PessoaServiceTest {
     }
 
     @Test
-    void quandoListaPessoasChaamdaEntaoretornaUmaListaDePessoas() {
+    void quandoListaPessoasChamadaEntaoretornaUmaListaDePessoas() {
         PessoaDTO expectedPessoaDTO = PessoaDTOBuilder.builder().build().toPessoaDto();
         Pessoa expectedFoundPessoa = pessoaMapper.toModel(expectedPessoaDTO);
 
@@ -82,7 +85,7 @@ public class PessoaServiceTest {
     }
 
     @Test
-    void whenListBeerIsCalledThenReturnAnEmptyList() {
+    void quandoListaPessoaChamadaEntaoRetornaUmaListaVazia() {
         when(pessoaRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
 
         List<PessoaDTO> encontradoPessoaDTO = pessoaService.listarPessoas();
@@ -90,4 +93,25 @@ public class PessoaServiceTest {
         assertTrue(encontradoPessoaDTO.isEmpty());
     }
 
+    @Test
+    void quandoExclusaoEChamadoComNomeValidoEntaoRetornaUmaPessoaQueDeveriaSerDeletada() throws PessoaNaoEncontradaException {
+        PessoaDTO expectedExcludedPessoaDTO = PessoaDTOBuilder.builder().build().toPessoaDto();
+        Pessoa expectedExcludedPessoa = pessoaMapper.toModel(expectedExcludedPessoaDTO);
+
+        when(pessoaRepository.findByNomeCompleto(expectedExcludedPessoaDTO.getNomeCompleto())).thenReturn(Optional.of(expectedExcludedPessoa));
+        doNothing().when(pessoaRepository).deleteByNomeCompleto(expectedExcludedPessoa.getNomeCompleto());
+
+        pessoaService.deleteByNome(expectedExcludedPessoaDTO.getNomeCompleto());
+
+        verify(pessoaRepository, times(1)).findByNomeCompleto(expectedExcludedPessoaDTO.getNomeCompleto());
+        verify(pessoaRepository, times(1)).deleteByNomeCompleto(expectedExcludedPessoaDTO.getNomeCompleto());
+    }
+
+    @Test
+    void quandoExclusaoEChamadoComNomeInvalidoEntaoRetornaUmaExceptionQueDeveriaSerLancada() {
+
+        when(pessoaRepository.findByNomeCompleto(INVALIDO_PESSOA_NOME)).thenReturn(Optional.empty());
+
+        assertThrows(PessoaNaoEncontradaException.class,() -> pessoaService.encontraPessoa(INVALIDO_PESSOA_NOME));
+    }
 }
