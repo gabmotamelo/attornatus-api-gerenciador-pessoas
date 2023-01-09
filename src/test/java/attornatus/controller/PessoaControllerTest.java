@@ -20,9 +20,8 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import java.util.Collections;
 
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PessoaControllerTest {
 
     private static final String PESSOA_API_URL_PATH = "/api/v1/pessoa";
+    private static final String VALIDO_PESSOA_NOME = "Gabriel Mota Melo";
+    private static final String INVALIDO_PESSOA_NOME = "Gabriel";
 
     private MockMvc mockMvc;
 
@@ -119,5 +120,25 @@ public class PessoaControllerTest {
         mockMvc.perform(get(PESSOA_API_URL_PATH)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void quandoDELETEPessoaChamadoComNomeValidoEntaoStatusNaoEncontradoERetornado() throws Exception {
+        doNothing().when(pessoaService).deleteByNome(VALIDO_PESSOA_NOME);
+
+        mockMvc.perform(delete(PESSOA_API_URL_PATH + "/" + VALIDO_PESSOA_NOME)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(pessoaService, times(1)).deleteByNome(VALIDO_PESSOA_NOME);
+    }
+
+    @Test
+    void quandoDELETEPessoaChamadoComNomeInvalidoEntaoStatusNaoEncontradoERetornado() throws Exception {
+        doThrow(PessoaNaoEncontradaException.class).when(pessoaService).encontraPessoa(INVALIDO_PESSOA_NOME);
+
+        mockMvc.perform(delete(PESSOA_API_URL_PATH + "/" + INVALIDO_PESSOA_NOME)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
