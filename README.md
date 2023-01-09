@@ -8,15 +8,15 @@
 
 <h1 align="center"> Perguntas qualidade do código </h1>
 
-<h5>Durante a implementação de uma nova funcionalidade de software solicitada, quais critérios você avalia e implementa para garantia 
-de qualidade de software? </h5>
+<h3>Durante a implementação de uma nova funcionalidade de software solicitada, quais critérios você avalia e implementa para garantia 
+de qualidade de software? </h3>
 <p>Geralmente eu começo avaliando as necessidades dessa nova implementação, e aí penso no que se adequaria de 
 acordo com as regras de negócio, e então começo escrevendo os testes, penso nas possíveis exceções, requisições e claro
 adequando o código com as regras de um código limpo e escalável(SOLID) e por fim como alocar as classes e implementações
 de acordo com a arquitetura do software.</p>
 
 
-<h5>Em qual etapa de implementação você considera a qualidade de software?</h5>
+<h3>Em qual etapa de implementação você considera a qualidade de software?</h3>
 
 <p>Eu acredito que na bateria de testes que você faz consegue deixar o código funcionando
 com todas as requisições ao modelo e regra de negócio,inclusive existe algumas metodologias como
